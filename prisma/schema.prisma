@@ -1,0 +1,111 @@
+// Schéma de la base de données — portfolio dynamique
+// Fournisseur : PostgreSQL (Neon, Supabase, ou Vercel Postgres — tous compatibles)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectStatus {
+  PUBLISHED   // Publié → visible sur le portfolio
+  IN_PROGRESS // En cours → visible avec un badge "En cours"
+  DRAFT       // Brouillon → non visible publiquement
+  ARCHIVED    // Archivé → non visible publiquement, conservé en admin
+}
+
+enum MessageStatus {
+  UNREAD
+  READ
+  ARCHIVED
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+// Table à une seule ligne : les infos personnelles affichées sur le site
+model Profile {
+  id        Int      @id @default(1)
+  name      String   @default("Fabère Bamba")
+  title     String   @default("Développeur Full-Stack")
+  bio       String   @default("")
+  photoUrl  String?
+  cvUrl     String?
+  email     String   @default("")
+  phone     String?
+  address   String?
+  socials   Json     @default("{}") // { github, linkedin, whatsapp, instagram, youtube, ... }
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  description   String
+  technologies  String[]      @default([])
+  githubUrl     String?
+  demoUrl       String?
+  category      String?
+  projectDate   DateTime?
+  status        ProjectStatus @default(DRAFT)
+  featured      Boolean       @default(false)
+  mainImageUrl  String?
+  order         Int           @default(0)
+  images        ProjectImage[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  url       String
+  order     Int     @default(0)
+}
+
+model Skill {
+  id    String @id @default(cuid())
+  name  String
+  level Int    @default(50) // 0–100, utilisé pour une éventuelle barre de niveau
+  icon  String? // nom d'icône ou URL
+  order Int    @default(0)
+}
+
+model Certification {
+  id              String    @id @default(cuid())
+  title           String
+  organization    String
+  description     String?
+  date            DateTime?
+  imageUrl        String?
+  certificateUrl  String?
+  order           Int       @default(0)
+}
+
+model Message {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  status    MessageStatus @default(UNREAD)
+  createdAt DateTime      @default(now())
+}
+
+// Table à une seule ligne : réglages globaux du site
+model SiteSettings {
+  id              Int    @id @default(1)
+  siteTitle       String @default("Fabère Bamba — Portfolio")
+  metaDescription String @default("")
+  footerText      String @default("© 2026 Fabère Bamba — Tous droits réservés.")
+  updatedAt       DateTime @updatedAt
+}
