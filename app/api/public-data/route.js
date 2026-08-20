@@ -1,5 +1,7 @@
 const { prisma } = require("../../../lib/prisma");
 
+export const dynamic = "force-dynamic";
+
 // Route publique — aucune authentification requise.
 // Ne renvoie jamais les projets en "Brouillon" ou "Archivé".
 export async function GET() {

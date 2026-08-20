@@ -2,6 +2,8 @@ const bcrypt = require("bcryptjs");
 const { prisma } = require("../../../../../lib/prisma");
 const { createSessionToken, COOKIE_NAME } = require("../../../../../lib/auth");
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request) {
   const { email, password } = await request.json();
 

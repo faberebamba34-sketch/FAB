@@ -1,5 +1,7 @@
 const { prisma } = require("../../../../lib/prisma");
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const certifications = await prisma.certification.findMany({ orderBy: { order: "asc" } });
   return Response.json(certifications);

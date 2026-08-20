@@ -1,5 +1,7 @@
 const { prisma } = require("../../../../../lib/prisma");
 
+export const dynamic = "force-dynamic";
+
 export async function PUT(request, { params }) {
   const body = await request.json();
   const data = {};

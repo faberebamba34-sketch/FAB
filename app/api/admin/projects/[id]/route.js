@@ -1,5 +1,7 @@
 const { prisma } = require("../../../../../lib/prisma");
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request, { params }) {
   const project = await prisma.project.findUnique({
     where: { id: params.id },

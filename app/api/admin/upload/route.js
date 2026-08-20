@@ -1,5 +1,7 @@
 const { put } = require("@vercel/blob");
 
+export const dynamic = "force-dynamic";
+
 // Reçoit un fichier (photo, image de projet, certificat, CV) et le stocke sur
 // Vercel Blob. Protégé par le middleware (/api/admin/*) — seul l'admin connecté
 // peut téléverser un fichier.

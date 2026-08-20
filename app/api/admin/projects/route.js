@@ -1,5 +1,7 @@
 const { prisma } = require("../../../../lib/prisma");
 
+export const dynamic = "force-dynamic";
+
 // GET — liste tous les projets (tous statuts confondus), pour l'admin
 export async function GET() {
   const projects = await prisma.project.findMany({

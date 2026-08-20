@@ -1,5 +1,7 @@
 const { COOKIE_NAME } = require("../../../../../lib/auth");
 
+export const dynamic = "force-dynamic";
+
 export async function POST() {
   const response = Response.json({ ok: true });
   response.headers.set(
