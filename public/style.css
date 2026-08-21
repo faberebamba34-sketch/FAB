@@ -637,3 +637,93 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .hero-title { font-size: 30px; }
   .panel-slider { width: 100px; }
 }
+
+/* ===========================================================
+   ANIMATIONS SUPPLÉMENTAIRES — ajouts purement additifs
+   =========================================================== */
+
+/* Texte accentué du titre : léger dégradé animé */
+.accent-text {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent));
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shimmerText 6s linear infinite;
+}
+@keyframes shimmerText { to { background-position: -200% center; } }
+
+/* Le terminal du hero flotte doucement */
+.hero-terminal { animation: floatSlow 6s ease-in-out infinite; }
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Effet de balayage lumineux sur le bouton principal au survol */
+.btn-primary { position: relative; overflow: hidden; }
+.btn-primary::after {
+  content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
+  transform: skewX(-20deg); transition: left .6s ease;
+}
+.btn-primary:hover::after { left: 130%; }
+
+/* Halo qui suit le curseur dans le hero */
+.hero { position: relative; }
+.hero::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 20%), var(--accent-soft), transparent 70%);
+  opacity: 0; transition: opacity .4s ease;
+}
+.hero:hover::before { opacity: 1; }
+
+/* Étiquettes de compétences : légère apparition en cascade au survol de la carte */
+.skill-card .tag { transition: transform .25s ease, background .25s ease; }
+.skill-card:hover .tag { animation: tagPop .4s ease backwards; }
+.skill-card:hover .tag:nth-child(1) { animation-delay: .02s; }
+.skill-card:hover .tag:nth-child(2) { animation-delay: .06s; }
+.skill-card:hover .tag:nth-child(3) { animation-delay: .1s; }
+.skill-card:hover .tag:nth-child(4) { animation-delay: .14s; }
+.skill-card:hover .tag:nth-child(5) { animation-delay: .18s; }
+@keyframes tagPop {
+  from { transform: translateY(4px) scale(.94); opacity: .5; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Icône du panneau Apparence : légère respiration */
+.palette-toggle-dot { animation: paletteSpin 8s linear infinite; }
+@keyframes paletteSpin { to { transform: rotate(360deg); } }
+
+/* Indicateur de navigation actif — pastille animée */
+.nav-indicator {
+  position: absolute; top: 0; left: 0; height: 100%; border-radius: 100px;
+  background: var(--accent); z-index: -1;
+  transition: transform .35s cubic-bezier(.4,0,.2,1), width .35s cubic-bezier(.4,0,.2,1);
+}
+.main-nav { position: relative; }
+
+/* Icônes du bandeau tech : légère oscillation au repos */
+.tech-icon { animation: iconSway 4s ease-in-out infinite; }
+.marquee-group:nth-child(2) .tech-icon { animation-delay: -2s; }
+
+@keyframes iconSway {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-3px) rotate(-4deg); }
+}
+
+[data-motion="reduced"] .accent-text,
+[data-motion="reduced"] .hero-terminal,
+[data-motion="reduced"] .btn-primary::after,
+[data-motion="reduced"] .hero::before,
+[data-motion="reduced"] .skill-card .tag,
+[data-motion="reduced"] .palette-toggle-dot,
+[data-motion="reduced"] .nav-indicator,
+[data-motion="reduced"] .tech-icon {
+  animation: none !important; transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accent-text, .hero-terminal, .btn-primary::after,
+  .hero::before, .skill-card .tag, .palette-toggle-dot, .nav-indicator, .tech-icon {
+    animation: none !important; transition: none !important;
+  }
+}

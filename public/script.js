@@ -716,3 +716,72 @@ async function initDynamicContent() {
 }
 
 initDynamicContent();
+
+// ===========================================================
+// ANIMATIONS SUPPLÉMENTAIRES — ajouts purement additifs
+// ===========================================================
+
+// --- Halo qui suit le curseur dans le hero ---
+if (typeof heroSection !== "undefined" && heroSection) {
+  heroSection.addEventListener("mousemove", (e) => {
+    const rect = heroSection.getBoundingClientRect();
+    heroSection.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+    heroSection.style.setProperty("--my", `${e.clientY - rect.top}px`);
+  });
+}
+
+// --- Nombres du hero qui comptent jusqu'à leur valeur ---
+const countUpObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    countUpObserver.unobserve(entry.target);
+
+    const el = entry.target;
+    const raw = el.textContent.trim();
+    const match = raw.match(/^(\D*)(\d+)(\D*)$/); // préfixe non-numérique, nombre, suffixe
+    if (!match) return; // valeur non numérique (ex: "L3") → laissée telle quelle
+
+    const [, prefix, numStr, suffix] = match;
+    const target = parseInt(numStr, 10);
+    const duration = 900;
+    const start = performance.now();
+
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}, { threshold: 0.6 });
+
+document.querySelectorAll(".stat-num").forEach((el) => countUpObserver.observe(el));
+
+// --- Pastille de navigation animée qui suit le lien actif ---
+(function setupNavIndicator() {
+  const nav = document.getElementById("mainNav");
+  if (!nav) return;
+
+  const indicator = document.createElement("span");
+  indicator.className = "nav-indicator";
+  nav.prepend(indicator);
+
+  function moveIndicator() {
+    const active = nav.querySelector(".nav-link.active");
+    if (!active) { indicator.style.opacity = "0"; return; }
+    indicator.style.opacity = "1";
+    indicator.style.width = active.offsetWidth + "px";
+    indicator.style.transform = `translateX(${active.offsetLeft}px)`;
+  }
+
+  moveIndicator();
+  window.addEventListener("resize", moveIndicator);
+
+  // Le petit délai laisse le temps aux autres scripts (scrollspy) de poser
+  // la classe "active" avant qu'on repositionne l'indicateur.
+  const navObserver = new MutationObserver(() => setTimeout(moveIndicator, 10));
+  nav.querySelectorAll(".nav-link").forEach((link) => {
+    navObserver.observe(link, { attributes: true, attributeFilter: ["class"] });
+  });
+})();
