@@ -588,6 +588,12 @@ function renderExtraSkills(skills) {
 function applyProfile(profile) {
   if (!profile || !profile.name) return; // profil pas encore configuré → on garde les valeurs par défaut
 
+  const photo = document.getElementById("aboutPhoto");
+  if (photo && profile.photoUrl) {
+    photo.src = profile.photoUrl;
+    photo.hidden = false;
+  }
+
   codeLines = [
     "const dev = {",
     `  name: "${profile.name}",`,
@@ -613,6 +619,81 @@ function applyProfile(profile) {
   });
 }
 
+function formatYear(dateStr) {
+  if (!dateStr) return "";
+  return new Date(dateStr).getFullYear();
+}
+
+function renderFormations(certifications) {
+  if (!certifications || !certifications.length) return;
+
+  const section = document.getElementById("formations");
+  const track = document.getElementById("formationTrack");
+  if (!section || !track) return;
+
+  // Ordre chronologique — la plus ancienne en bas, la plus récente en haut,
+  // pour donner la sensation de "gravir les échelons" en remontant la page.
+  const sorted = [...certifications].sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
+
+  track.innerHTML = "";
+  sorted.forEach((item, i) => {
+    const step = document.createElement("div");
+    step.className = "formation-step reveal";
+    step.style.setProperty("--delay", `${Math.min(i * 0.08, 0.4)}s`);
+    step.innerHTML = `
+      <div class="formation-badge">${i + 1}</div>
+      <div class="formation-card">
+        <span class="formation-year">${escapeHtml(String(formatYear(item.date) || ""))}</span>
+        <h3 class="formation-title">${escapeHtml(item.title)}</h3>
+        <p class="formation-org">${escapeHtml(item.organization)}</p>
+        ${item.description ? `<p class="formation-desc">${escapeHtml(item.description)}</p>` : ""}
+      </div>
+    `;
+    track.appendChild(step);
+  });
+
+  section.hidden = false;
+  track.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+}
+
+function renderCertificates(certifications) {
+  const items = (certifications || []).filter((c) => c.imageUrl || c.certificateUrl);
+  if (!items.length) return;
+
+  const section = document.getElementById("certificatsMarquee");
+  const track = document.getElementById("certificatsTrack");
+  if (!section || !track) return;
+
+  function buildGroup(hidden) {
+    const group = document.createElement("div");
+    group.className = "marquee-group";
+    if (hidden) group.setAttribute("aria-hidden", "true");
+    items.forEach((item) => {
+      const card = document.createElement("a");
+      card.className = "cert-card";
+      card.href = item.certificateUrl || item.imageUrl || "#";
+      card.target = "_blank";
+      card.rel = "noopener";
+      card.innerHTML = `
+        ${item.imageUrl
+          ? `<img class="cert-thumb" src="${escapeHtml(item.imageUrl)}" alt="" loading="lazy">`
+          : `<div class="cert-thumb-placeholder">◆</div>`}
+        <div class="cert-body">
+          <div class="cert-title">${escapeHtml(item.title)}</div>
+          <div class="cert-org">${escapeHtml(item.organization)}</div>
+        </div>
+      `;
+      group.appendChild(card);
+    });
+    return group;
+  }
+
+  track.innerHTML = "";
+  track.appendChild(buildGroup(false));
+  track.appendChild(buildGroup(true));
+  section.hidden = false;
+}
+
 async function initDynamicContent() {
   try {
     const res = await fetch("/api/public-data");
@@ -621,6 +702,8 @@ async function initDynamicContent() {
       applyProfile(data.profile);
       renderProjects(data.projects);
       renderExtraSkills(data.skills);
+      renderFormations(data.certifications);
+      renderCertificates(data.certifications);
 
       if (data.settings?.siteTitle) document.title = data.settings.siteTitle;
     }
