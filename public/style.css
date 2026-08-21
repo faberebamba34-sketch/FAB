@@ -175,9 +175,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 .burger { display: none; width: 40px; height: 40px; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
 .burger span { width: 20px; height: 2px; background: var(--text); transition: transform .3s ease, opacity .3s ease; }
-.burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+/* .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); } */
 .burger.open span:nth-child(2) { opacity: 0; }
-.burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+/* .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); } */
 
 /* ===========================================================
    BUTTONS
@@ -450,7 +450,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .formation-track::before {
   content: ''; position: absolute; left: 13px; top: 6px; bottom: 6px; width: 3px; border-radius: 3px;
-  background: linear-gradient(to top, var(--accent), color-mix(in srgb, var(--accent) 25%, var(--border)));
+  background: linear-gradient(to bottom, var(--accent), color-mix(in srgb, var(--accent) 25%, var(--border)));
 }
 .formation-step { position: relative; }
 .formation-badge {
@@ -459,11 +459,24 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   display: flex; align-items: center; justify-content: center;
   font-family: var(--font-mono); font-size: 10px; font-weight: 700;
 }
-.formation-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; }
+.formation-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; position: relative; }
 .formation-year { font-family: var(--font-mono); font-size: 12px; color: var(--accent); }
 .formation-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin: 4px 0 2px; }
 .formation-org { font-size: 13px; color: var(--text-dim); margin-bottom: 8px; }
 .formation-desc { font-size: 14px; color: var(--text-dim); }
+
+/* Étape la plus récente — mise en avant lumineuse */
+.formation-step.latest .formation-badge {
+  background: var(--accent); color: #05130d; box-shadow: 0 0 0 5px var(--accent-soft);
+}
+.formation-step.latest .formation-card {
+  border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 20px 45px -20px var(--accent);
+}
+.formation-current {
+  position: absolute; top: 18px; right: 20px;
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--accent);
+  border: 1px solid var(--accent); border-radius: 100px; padding: 3px 10px;
+}
 
 /* ---- Certificate marquee cards ---- */
 .cert-card {

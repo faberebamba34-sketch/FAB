@@ -631,18 +631,19 @@ function renderFormations(certifications) {
   const track = document.getElementById("formationTrack");
   if (!section || !track) return;
 
-  // Ordre chronologique — la plus ancienne en bas, la plus récente en haut,
-  // pour donner la sensation de "gravir les échelons" en remontant la page.
-  const sorted = [...certifications].sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
+  // Ordre chronologique inversé — la plus récente en haut (mise en avant),
+  // la plus ancienne en bas, pour donner la sensation de "gravir les échelons".
+  const sorted = [...certifications].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
   track.innerHTML = "";
   sorted.forEach((item, i) => {
     const step = document.createElement("div");
-    step.className = "formation-step reveal";
+    step.className = `formation-step reveal${i === 0 ? " latest" : ""}`;
     step.style.setProperty("--delay", `${Math.min(i * 0.08, 0.4)}s`);
     step.innerHTML = `
-      <div class="formation-badge">${i + 1}</div>
+      <div class="formation-badge">${sorted.length - i}</div>
       <div class="formation-card">
+        ${i === 0 ? `<span class="formation-current">Actuel</span>` : ""}
         <span class="formation-year">${escapeHtml(String(formatYear(item.date) || ""))}</span>
         <h3 class="formation-title">${escapeHtml(item.title)}</h3>
         <p class="formation-org">${escapeHtml(item.organization)}</p>
