@@ -353,7 +353,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
    SECTIONS
    =========================================================== */
 .section { padding: 120px 0; position: relative; }
-.section-alt { background: color-mix(in srgb, var(--surface) 55%, transparent); transition: background-color .4s ease; }
+.section-alt {  transition: background-color .4s ease; }
 .section-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4vw, 38px); margin-bottom: 24px; }
 .section-lead { color: var(--text-dim); font-size: 16px; max-width: 60ch; margin-bottom: 48px; }
 
