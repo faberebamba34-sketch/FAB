@@ -46,25 +46,24 @@ export default function DashboardPage() {
         {stats.recentProjects.length === 0 ? (
           <p className="empty-state">Aucun projet pour l'instant.</p>
         ) : (
-          <table className="admin-table">
-            <thead><tr><th>Titre</th><th>Statut</th><th>Date</th><th></th></tr></thead>
-            <tbody>
-              {stats.recentProjects.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.title}</td>
-                  <td><span className={`badge badge-${p.status}`}>{p.status}</span></td>
-                  <td>{new Date(p.createdAt).toLocaleDateString("fr-FR")}</td>
-                  <td>
-                    {p.mainImageUrl ? (
-                      <img src={p.mainImageUrl} alt="" className="table-thumb" />
-                    ) : (
-                      <div className="table-thumb" />
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="project-carousel">
+            {stats.recentProjects.map((p) => (
+              <div className="project-mini-card" key={p.id}>
+                {p.mainImageUrl ? (
+                  <img src={p.mainImageUrl} alt="" className="project-mini-thumb" />
+                ) : (
+                  <div className="project-mini-thumb-placeholder" />
+                )}
+                <div className="project-mini-body">
+                  <span className="project-mini-title">{p.title}</span>
+                  <div className="project-mini-meta">
+                    <span className={`badge badge-${p.status}`}>{p.status}</span>
+                    <span>{new Date(p.createdAt).toLocaleDateString("fr-FR")}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
 
@@ -73,19 +72,25 @@ export default function DashboardPage() {
         {stats.recentMessages.length === 0 ? (
           <p className="empty-state">Aucun message pour l'instant.</p>
         ) : (
-          <table className="admin-table">
-            <thead><tr><th>Nom</th><th>Email</th><th>Date</th><th>Statut</th></tr></thead>
-            <tbody>
-              {stats.recentMessages.map((m) => (
-                <tr key={m.id}>
-                  <td>{m.name}</td>
-                  <td>{m.email}</td>
-                  <td>{new Date(m.createdAt).toLocaleDateString("fr-FR")}</td>
-                  <td><span className={`badge badge-${m.status}`}>{m.status}</span></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="table-scroll">
+            <table className="admin-table">
+              <thead><tr><th>Nom</th><th></th><th>Date</th><th>Statut</th></tr></thead>
+              <tbody>
+                {stats.recentMessages.map((m) => (
+                  <tr key={m.id}>
+                    <td>{m.name}</td>
+                    <td>
+                      <a href={`mailto:${m.email}`} className="icon-btn" title={m.email} onClick={(e) => e.stopPropagation()}>
+                        <IconMail />
+                      </a>
+                    </td>
+                    <td>{new Date(m.createdAt).toLocaleDateString("fr-FR")}</td>
+                    <td><span className={`badge badge-${m.status}`}>{m.status}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

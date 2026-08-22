@@ -121,7 +121,8 @@ export default function CertificationsPage() {
         {items.length === 0 ? (
           <p className="empty-state">Aucune formation enregistrée pour l'instant.</p>
         ) : (
-          <table className="admin-table">
+          <div className="table-scroll">
+            <table className="admin-table">
             <thead><tr><th>Titre</th><th>Organisme</th><th>Date</th><th></th></tr></thead>
             <tbody>
               {items.map((c) => (
@@ -137,6 +138,7 @@ export default function CertificationsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

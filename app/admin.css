@@ -228,15 +228,48 @@ a { color: inherit; }
 .mobile-bottom-nav { display: none; }
 .mobile-menu-sheet { display: none; }
 
+/* Wrapper autour de n'importe quel <table> pour éviter le débordement horizontal sur mobile */
+.table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-scroll .admin-table { min-width: 480px; }
+
+/* Petit bouton icône (ex: email) qui ouvre une action sans prendre de place */
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--text-dim); flex-shrink: 0;
+  transition: border-color .2s ease, color .2s ease;
+}
+.icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+.icon-btn svg { width: 15px; height: 15px; }
+
+/* Carrousel horizontal "Derniers projets" — défilement type slide, snap par carte */
+.project-carousel {
+  display: flex; gap: 14px; overflow-x: auto; padding-bottom: 4px;
+  scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+}
+.project-mini-card {
+  flex: 0 0 auto; width: 200px; scroll-snap-align: start;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.project-mini-thumb { width: 100%; height: 110px; object-fit: cover; background: var(--surface-2); display: block; }
+.project-mini-thumb-placeholder { width: 100%; height: 110px; background: var(--surface-2); }
+.project-mini-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; }
+.project-mini-title { font-weight: 600; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.project-mini-meta { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--text-dim); }
+
 @media (max-width: 900px) {
   .admin-sidebar { display: none; }
   .admin-topbar { padding: 16px 16px 0; flex-wrap: wrap; }
-  .admin-main { padding: 18px 16px 100px; }
-  .admin-stats-grid { grid-template-columns: repeat(3, 1fr); }
-  .admin-stat-card { flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px; }
+  .admin-main { padding: 18px 16px 100px; max-width: 100%; }
+  .admin-stats-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .admin-stat-card { flex-direction: column; align-items: flex-start; gap: 10px; padding: 12px; }
+  .admin-stat-num { font-size: 19px; }
+  .admin-stat-label { font-size: 11px; }
+  .admin-card { padding: 16px; }
   .field-row { grid-template-columns: 1fr; }
   .user-chip-info { display: none; }
   .admin-search { max-width: none; }
+  .project-mini-card { width: 168px; }
 
   .mobile-topbar {
     display: flex; align-items: center; justify-content: space-between;

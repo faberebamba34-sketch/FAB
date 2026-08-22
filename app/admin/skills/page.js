@@ -81,7 +81,8 @@ export default function SkillsPage() {
         {skills.length === 0 ? (
           <p className="empty-state">Aucune compétence pour l'instant.</p>
         ) : (
-          <table className="admin-table">
+          <div className="table-scroll">
+            <table className="admin-table">
             <thead><tr><th>Nom</th><th>Niveau</th><th>Ordre</th><th></th></tr></thead>
             <tbody>
               {skills.map((s) => (
@@ -97,6 +98,7 @@ export default function SkillsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

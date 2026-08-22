@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { IconMail } from "../_components/Icons";
 
 export default function MessagesPage() {
   const [messages, setMessages] = useState([]);
@@ -52,32 +53,46 @@ export default function MessagesPage() {
         {messages.length === 0 ? (
           <p className="empty-state">Aucun message.</p>
         ) : (
-          <table className="admin-table">
-            <thead><tr><th>Nom</th><th>Email</th><th>Sujet</th><th>Date</th><th>Statut</th><th></th></tr></thead>
-            <tbody>
-              {messages.map((m) => (
-                <tr key={m.id} style={{ cursor: "pointer" }} onClick={() => openMessage(m)}>
-                  <td>{m.name}</td>
-                  <td>{m.email}</td>
-                  <td>{m.subject || "—"}</td>
-                  <td>{new Date(m.createdAt).toLocaleDateString("fr-FR")}</td>
-                  <td><span className={`badge badge-${m.status}`}>{m.status}</span></td>
-                  <td onClick={(e) => e.stopPropagation()} style={{ display: "flex", gap: 6 }}>
-                    {m.status !== "UNREAD" && <button className="btn btn-sm" onClick={() => setStatus(m.id, "UNREAD")}>Non lu</button>}
-                    {m.status !== "ARCHIVED" && <button className="btn btn-sm" onClick={() => setStatus(m.id, "ARCHIVED")}>Archiver</button>}
-                    <button className="btn btn-sm btn-danger" onClick={() => handleDelete(m.id)}>Suppr.</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="table-scroll">
+            <table className="admin-table">
+              <thead><tr><th>Nom</th><th></th><th>Sujet</th><th>Date</th><th>Statut</th><th></th></tr></thead>
+              <tbody>
+                {messages.map((m) => (
+                  <tr key={m.id} style={{ cursor: "pointer" }} onClick={() => openMessage(m)}>
+                    <td>{m.name}</td>
+                    <td>
+                      <a
+                        href={`mailto:${m.email}`}
+                        className="icon-btn"
+                        title={m.email}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <IconMail />
+                      </a>
+                    </td>
+                    <td>{m.subject || "—"}</td>
+                    <td>{new Date(m.createdAt).toLocaleDateString("fr-FR")}</td>
+                    <td><span className={`badge badge-${m.status}`}>{m.status}</span></td>
+                    <td onClick={(e) => e.stopPropagation()} style={{ display: "flex", gap: 6 }}>
+                      {m.status !== "UNREAD" && <button className="btn btn-sm" onClick={() => setStatus(m.id, "UNREAD")}>Non lu</button>}
+                      {m.status !== "ARCHIVED" && <button className="btn btn-sm" onClick={() => setStatus(m.id, "ARCHIVED")}>Archiver</button>}
+                      <button className="btn btn-sm btn-danger" onClick={() => handleDelete(m.id)}>Suppr.</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
       {open && (
         <div className="admin-card">
           <h2>Message de {open.name}</h2>
-          <p className="admin-subtitle">{open.email} — {new Date(open.createdAt).toLocaleString("fr-FR")}</p>
+          <p className="admin-subtitle">
+            <a href={`mailto:${open.email}`} style={{ color: "var(--accent)" }}>{open.email}</a>
+            {" — "}{new Date(open.createdAt).toLocaleString("fr-FR")}
+          </p>
           {open.subject && <p><strong>Sujet :</strong> {open.subject}</p>}
           <p style={{ whiteSpace: "pre-wrap" }}>{open.message}</p>
           <button className="btn" onClick={() => setOpen(null)}>Fermer</button>

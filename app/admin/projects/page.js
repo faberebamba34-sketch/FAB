@@ -219,7 +219,8 @@ export default function ProjectsPage() {
         {projects.length === 0 ? (
           <p className="empty-state">Aucun projet. Ajoute ton premier projet ci-dessus.</p>
         ) : (
-          <table className="admin-table">
+          <div className="table-scroll">
+            <table className="admin-table">
             <thead>
               <tr>
                 <th>Titre</th>
@@ -252,6 +253,7 @@ export default function ProjectsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>
