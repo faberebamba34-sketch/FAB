@@ -1925,6 +1925,12 @@ button {
     background-size: 30px 30px;
   }
 }
+@media ( max-width: 500px) {
+  .logoh{
+    width: 170px;
+  }
+  
+}
 
 @media (max-width: 480px) {
   .skills-grid {
@@ -2132,11 +2138,5 @@ button {
   .tech-icon {
     animation: none !important;
     transition: none !important;
-  }
-}
-
-@media screen {
-  .logoh{
-    width: 170px;
   }
 }
