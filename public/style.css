@@ -2134,3 +2134,9 @@ button {
     transition: none !important;
   }
 }
+
+@media screen {
+  .logoh{
+    width: 170px;
+  }
+}
