@@ -1435,7 +1435,9 @@ button {
   width: 2px;
   background: var(--border);
 }
-
+.logoh{
+    width: 300px;
+  }
 .git-step {
   position: relative;
 }
