@@ -1501,13 +1501,11 @@ button {
 }
 .brand { display: inline-flex; align-items: center; }
 .logoh {
-  height: 34px; width: auto; display: block;
+  width: 300px; display: block;
   transition: transform .3s ease, filter .4s ease;
   animation: logoPop .6s cubic-bezier(.34,1.56,.64,1);
 }
-/* Sur fond sombre, le logo (bleu/indigo) manque de contraste :
-   on le convertit en silhouette claire pour qu'il reste lisible. */
-[data-theme="dark"] .logoh { filter: brightness(0) invert(1); }
+
 .brand:hover .logoh { transform: scale(1.06) rotate(-2deg); }
 @keyframes logoPop {
   from { opacity: 0; transform: scale(.7) rotate(-8deg); }
@@ -2004,7 +2002,7 @@ button {
 }
 @media ( max-width: 500px) {
   .logoh{
-    height: 26px;
+    width: 180px;
   }
   
 }
