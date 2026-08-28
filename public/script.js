@@ -588,10 +588,26 @@ function renderExtraSkills(skills) {
 function applyProfile(profile) {
   if (!profile || !profile.name) return; // profil pas encore configuré → on garde les valeurs par défaut
 
+  const visual = document.getElementById("profileVisual");
   const photo = document.getElementById("aboutPhoto");
-  if (photo && profile.photoUrl) {
+  if (visual && photo && profile.photoUrl) {
     photo.src = profile.photoUrl;
-    photo.hidden = false;
+    visual.hidden = false;
+
+    const badge = document.getElementById("profileBadge");
+    if (badge && profile.title) badge.textContent = profile.title;
+
+    const chipLabel = document.getElementById("profileChipLabel");
+    const chipValue = document.getElementById("profileChipValue");
+    if (chipLabel && chipValue) {
+      if (profile.address) {
+        chipLabel.textContent = "Basé à";
+        chipValue.textContent = profile.address;
+      } else {
+        chipLabel.textContent = "Disponibilité";
+        chipValue.textContent = "Stage & freelance";
+      }
+    }
   }
 
   codeLines = [
