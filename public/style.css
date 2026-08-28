@@ -1499,7 +1499,7 @@ button {
   width: 2px;
   background: var(--border);
 }
-.brand { display: inline-flex; align-items: center; }
+/* .brand { display: inline-flex; align-items: center; } */
 .logoh {
   width: 300px; display: block;
   transition: transform .3s ease, filter .4s ease;
