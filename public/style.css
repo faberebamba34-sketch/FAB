@@ -1501,7 +1501,7 @@ button {
 }
 /* .brand { display: inline-flex; align-items: center; } */
 .logoh {
-  height: 52px; width: auto; display: block;
+  height: 52px; width: 300px; display: block;
   transition: transform .3s ease, filter .4s ease;
   animation: logoPop .6s cubic-bezier(.34,1.56,.64,1);
 }
@@ -2015,6 +2015,7 @@ button {
 @media ( max-width: 500px) {
   .logoh{
     height: 44px;
+    width: 120px;
   }
   
 }
