@@ -97,15 +97,26 @@ const burgerBtn = document.getElementById("burgerBtn");
 const mainNav = document.getElementById("mainNav");
 
 burgerBtn.addEventListener("click", () => {
-  burgerBtn.classList.toggle("open");
-  mainNav.classList.toggle("open");
+  const isOpen = burgerBtn.classList.toggle("open");
+  mainNav.classList.toggle("open", isOpen);
+  document.body.style.overflow = isOpen ? "hidden" : "";
 });
 
 document.querySelectorAll("[data-nav]").forEach(link => {
   link.addEventListener("click", () => {
     burgerBtn.classList.remove("open");
     mainNav.classList.remove("open");
+    document.body.style.overflow = "";
   });
+});
+
+document.addEventListener("click", (e) => {
+  const clickedInsideNav = mainNav.contains(e.target) || burgerBtn.contains(e.target);
+  if (!clickedInsideNav && mainNav.classList.contains("open")) {
+    burgerBtn.classList.remove("open");
+    mainNav.classList.remove("open");
+    document.body.style.overflow = "";
+  }
 });
 
 // ===========================================================
