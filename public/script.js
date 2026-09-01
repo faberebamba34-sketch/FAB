@@ -514,11 +514,16 @@ function buildProjectCard(project, index) {
     .map((t) => `<span class="tag">${escapeHtml(t)}</span>`)
     .join("");
 
-  const link = project.demoUrl
-    ? `<a href="${escapeHtml(project.demoUrl)}" target="_blank" rel="noopener" class="project-link">Voir le site ↗</a>`
-    : project.githubUrl
-      ? `<a href="${escapeHtml(project.githubUrl)}" target="_blank" rel="noopener" class="project-link">Voir le code ↗</a>`
-      : "";
+  const EXTERNAL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>';
+  const GITHUB_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.4-5.25 5.68.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.2.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5Z"/></svg>';
+
+  const siteLink = project.demoUrl
+    ? `<a href="${escapeHtml(project.demoUrl)}" target="_blank" rel="noopener" class="project-link">${EXTERNAL_SVG}Voir le site</a>`
+    : "";
+  const repoLink = project.githubUrl
+    ? `<a href="${escapeHtml(project.githubUrl)}" target="_blank" rel="noopener" class="project-link">${GITHUB_SVG}Voir le dépôt</a>`
+    : "";
+  const link = (siteLink || repoLink) ? `<div class="project-links-row">${siteLink}${repoLink}</div>` : "";
 
   const article = document.createElement("article");
   article.className = `project-card reveal${isFeatured ? " project-featured" : ""}`;
@@ -622,6 +627,19 @@ function applyProfile(profile) {
   ].filter(Boolean);
 
   const socials = profile.socials || {};
+
+  const cvBtn = document.getElementById("cvBtn");
+  if (cvBtn && profile.cvUrl) {
+    cvBtn.href = profile.cvUrl;
+    cvBtn.hidden = false;
+  }
+
+  const githubBtn = document.getElementById("githubBtn");
+  if (githubBtn && socials.github) {
+    githubBtn.href = socials.github;
+    githubBtn.hidden = false;
+  }
+
   const linkMap = {
     GitHub: socials.github,
     WhatsApp: socials.whatsapp ? `https://wa.me/${socials.whatsapp}` : null,

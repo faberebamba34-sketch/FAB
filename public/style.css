@@ -1501,7 +1501,7 @@ button {
 }
 /* .brand { display: inline-flex; align-items: center; } */
 .logoh {
-  width: 300px; display: block;
+  height: 32px; width: auto; display: block;
   transition: transform .3s ease, filter .4s ease;
   animation: logoPop .6s cubic-bezier(.34,1.56,.64,1);
 }
@@ -1706,15 +1706,27 @@ button {
 }
 
 .project-link {
+  display: inline-flex; align-items: center; gap: 7px;
   font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--accent);
+  font-size: 12.5px;
+  color: var(--text);
   width: fit-content;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 8px 14px;
+  transition: border-color .2s ease, color .2s ease, transform .2s ease;
 }
+.project-link svg { width: 15px; height: 15px; flex-shrink: 0; }
 
 .project-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
 }
+
+.project-links-row { display: flex; flex-wrap: wrap; gap: 10px; }
 
 .editor-statusbar {
   display: flex;
@@ -2002,7 +2014,7 @@ button {
 }
 @media ( max-width: 500px) {
   .logoh{
-    width: 180px;
+    height: 24px;
   }
   
 }
